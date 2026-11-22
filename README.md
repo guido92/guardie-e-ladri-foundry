@@ -4,6 +4,8 @@ Sistema **non ufficiale** per giocare a *Guardie & Ladri* (Atropo Kelevra, 2025 
 
 Sviluppato con il consenso di Alessandro Buniotto e promosso dalla Taverna di Guido.
 
+![Il Tavolo durante un Lavoretto](docs/img/lavoretto_esito.jpg)
+
 ## Cosa fa
 
 - **I due Mazzi da Poker** (Banda e Croupier) e i **4 Jolly** custoditi dal Croupier, con mescolate e scarti gestiti dal tavolo.
@@ -26,9 +28,21 @@ Serve un GM connesso: le mosse dei giocatori passano al suo client, che controll
 
 > Le Carte nascoste (mani degli altri, mano del Croupier) non vengono mostrate dall'interfaccia, ma lo stato della partita è condiviso tra i client: chi sa usare la console del browser potrebbe sbirciare. È un gioco tra amici.
 
+## Anteprima
+
+| Il Fixer | Il Grande Colpo |
+|---|---|
+| ![](docs/img/fixer.jpg) | ![](docs/img/colpo.jpg) |
+| **La Grande Fuga** | **La Guida** |
+| ![](docs/img/fuga.jpg) | ![](docs/img/guida_classi.jpg) |
+
 ## Installazione
 
-Da manifesto (quando pubblicato): incolla l'URL del `system.json` in *Installa sistema*.
+In Foundry: *Sistemi di gioco → Installa sistema* e incolla nel campo *URL del manifesto*:
+
+```
+https://github.com/guido92/guardie-e-ladri-foundry/releases/latest/download/system.json
+```
 
 In sviluppo: collega la cartella del repo in `Data/systems/guardie-e-ladri` (junction su Windows) e riavvia Foundry.
 

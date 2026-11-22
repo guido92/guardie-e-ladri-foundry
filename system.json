@@ -46,8 +46,16 @@
   "media": [
     {
       "type": "cover",
-      "url": "systems/guardie-e-ladri/assets/gl-art/copertina.jpg",
+      "url": "https://raw.githubusercontent.com/guido92/guardie-e-ladri-foundry/main/assets/gl-art/copertina.jpg",
+      "caption": "Guardie & Ladri"
+    },
+    {
+      "type": "setup",
+      "url": "https://raw.githubusercontent.com/guido92/guardie-e-ladri-foundry/main/assets/gl-art/sfondo.jpg",
       "caption": "Guardie & Ladri"
     }
-  ]
+  ],
+  "license": "https://github.com/guido92/guardie-e-ladri-foundry/blob/main/LICENSE",
+  "readme": "https://github.com/guido92/guardie-e-ladri-foundry#readme",
+  "changelog": "https://github.com/guido92/guardie-e-ladri-foundry/releases"
 }
