@@ -1,0 +1,149 @@
+
+### Partita 1 (seme 1000)
+  - Banda di 4: intellettuale, gangster*, lady*, meccanico; opzioni {"semi":false,"fixerElimina":false,"allIn":true}
+  - Lavoretto banale (intellettuale): Successo, Rilancio, ritiro
+  - Lavoretto esagerato (gangster): Fallimento
+  - Lavoretto banale (lady): Successo, Bottino 3
+  - Lavoretto banale (meccanico): Fallimento
+  - Fixer: fumogeni, mappa
+  - Colpo: Ingresso teatrale (4 Guardie), Diversivo; Scasso nessuno
+  - Epilogo: arrestati
+
+### Partita 2 (seme 1001)
+  - Banda di 2: intellettuale*, gangster; opzioni {"semi":false,"fixerElimina":false,"allIn":true}
+  - Lavoretto banale (intellettuale+gangster): Fallimento
+  - Fixer: attrezzi, personale
+  - Colpo: Ingresso teatrale (1 Guardie); Scasso nessuno
+  - Epilogo: arrestati
+
+### Partita 3 (seme 1002)
+  - Banda di 4: meccanico, intellettuale, lady, gangster*; opzioni {"semi":false,"fixerElimina":false,"allIn":false}
+  - Lavoretto discreto (meccanico), meccanico si ritira al flop: tutti ritirati
+  - Lavoretto discreto (intellettuale): Successo, Bottino 4
+  - Lavoretto esagerato (gangster+lady), gangster si ritira al flop: Fallimento
+  - Fixer: personale, mappa
+  - Colpo: Ingresso incognito (1 Guardie), Diversivo; Scasso nessuno
+  - Epilogo: arrestati (pentiti 1)
+
+### Partita 4 (seme 1003)
+  - Banda di 2: intellettuale*, meccanico*; opzioni {"semi":false,"fixerElimina":false,"allIn":true}
+  - Lavoretto banale (intellettuale): Successo con Rilancio, Bottino 5
+  - Lavoretto esagerato (meccanico), meccanico si ritira al turn: tutti ritirati
+  - Fixer: combinazione, fumogeni
+  - Colpo: Ingresso teatrale (2 Guardie), Diversivo; Scasso professionale
+  - Epilogo: fuggiti
+
+### Partita 5 (seme 1004)
+  - Banda di 4: lady*, intellettuale, gangster*, meccanico; opzioni {"semi":false,"fixerElimina":true,"allIn":false}
+  - Lavoretto discreto (gangster+intellettuale): Successo, Bottino 4
+  - Lavoretto banale (lady+meccanico): Successo, Bottino 3
+  - Fixer: fumogeni, personale
+  - Colpo: Ingresso incognito (2 Guardie), Diversivo, Diversivo, Diversivo; Scasso brutale
+  - Epilogo: arrestati
+
+### Partita 6 (seme 1005)
+  - Banda di 3: lady*, gangster, meccanico; opzioni {"semi":false,"fixerElimina":false,"allIn":false}
+  - Lavoretto discreto (lady), lady si ritira al turn: tutti ritirati
+  - Lavoretto discreto (gangster+meccanico): Fallimento
+  - Fixer: niente
+  - Colpo: Ingresso teatrale (3 Guardie); Scasso nessuno
+  - Epilogo: arrestati
+
+### Partita 7 (seme 1006)
+  - Banda di 4: intellettuale*, meccanico, lady*, gangster; opzioni {"semi":true,"fixerElimina":false,"allIn":true}
+  - Lavoretto tosto (intellettuale), intellettuale si ritira al turn: tutti ritirati
+  - Lavoretto discreto (meccanico), meccanico si ritira al turn: tutti ritirati
+  - Lavoretto esagerato (lady), baciamano: Fallimento
+  - Lavoretto esagerato (gangster): Successo, Rilancio, ritiro
+  - Fixer: fumogeni, attrezzi
+  - Colpo: Ingresso teatrale (4 Guardie), Diversivo; Scasso brutale
+  - Epilogo: arrestati (pentiti 1)
+
+### Partita 8 (seme 1007)
+  - Banda di 3: meccanico, gangster*, intellettuale; opzioni {"semi":true,"fixerElimina":true,"allIn":true}
+  - Lavoretto banale (meccanico): Fallimento
+  - Lavoretto banale (gangster): Fallimento
+  - Lavoretto discreto (intellettuale), intellettuale si ritira al turn: tutti ritirati
+  - Fixer: niente
+  - Colpo: Ingresso teatrale (3 Guardie), Diversivo; Scasso nessuno
+  - Epilogo: fuggitiManiVuote
+
+### Partita 9 (seme 1008)
+  - Banda di 4: meccanico, gangster*, intellettuale, lady*; opzioni {"semi":false,"fixerElimina":true,"allIn":false}
+  - Lavoretto esagerato (gangster+meccanico): Fallimento
+  - Lavoretto discreto (intellettuale): Fallimento
+  - Lavoretto banale (lady): Successo, Rilancio fallito
+  - Fixer: fumogeni
+  - Colpo: Ingresso teatrale (4 Guardie), Diversivo; Scasso nessuno
+  - Epilogo: arrestati
+
+### Partita 10 (seme 1009)
+  - Banda di 3: lady, intellettuale, gangster*; opzioni {"semi":false,"fixerElimina":false,"allIn":true}
+  - Lavoretto banale (lady): Successo, Rilancio, ritiro
+  - Lavoretto discreto (intellettuale+gangster): Fallimento
+  - Fixer: fumogeni, personale
+  - Colpo: Ingresso teatrale (1 Guardie), Diversivo; Scasso nessuno
+  - Epilogo: arrestati
+
+10 partite, 1195 controlli su 61 regole, problemi: 0
+    315  108 carte, nessuna duplicata
+    315  4 Jolly in gioco
+     49  il Fixer rifiuta un pagamento sbagliato
+     33  mani iniziali (2, +1 Ricercato, +Coppia Gangster, +Jolly in 3 giocatori)
+     33  un solo Lavoretto a testa
+     26  flop: 3 Carte dalla cima del Mazzo della Banda
+     26  da soli si giocano 2 Carte, in coppia 1 a testa
+     25  4ª Carta dopo il flop
+     22  esito del Confronto (Poker, parità al Croupier)
+     20  5ª Carta
+     20  il Croupier pesca le Carte della Tabella del Grado di Rischio
+     20  dopo la 5ª Carta non ci si ritira più
+     15  acquisto dal Fixer con la combinazione del listino
+     15  non si compra due volte lo stesso articolo
+     12  le Carte del Fixer tornano nel Mazzo della Banda
+     11  Fallimento: si perdono solo le Carte giocate
+     10  3 Carte del Croupier per ogni Guardia Allertata
+     10  Diversivo: il Ladro perde 1 Carta
+     10  Diversivo: tolte tante Carte quante le Guardie Allertate
+     10  Scasso: 3 Carte per Guardia
+     10  Bottino Finale solo se lo Scasso riesce
+     10  la partita arriva all'Epilogo
+     10  a partita finita non si gioca più
+      9  niente carte prima della Coppia del Gangster
+      9  Coppia del Gangster solo di numeri 2-10
+      9  Coppia del Gangster presa dal Mazzo
+      9  Scasso Professionale solo con la Combinazione
+      8  Fumogeni e Attrezzi danno 1 Jolly
+      8  Guardie Allertate dall'Ingresso teatrale
+      8  Meccanico: 1 Carta all'inizio della Fuga
+      8  Fuga: +1 Carta per Ladro al Mazzetto (meno con l'Auto da corsa)
+      8  Ingresso Secondario solo con la Mappa
+      7  Fuga: 4ª e 5ª Carta insieme
+      7  esito della Fuga
+      6  Guardie dello Scasso nessuno (Eureka)
+      6  chi si ritira non fa altri Lavoretti
+      5  Rilancio: le Carte dei Ladri restano a terra
+      5  Rilancio: il Croupier torna al numero della Tabella
+      5  Rilancio: 3 nuove Carte sul tavolo
+      5  il Bottino finisce nelle mani della Banda
+      5  Fuga fallita: arrestati
+      5  ritiro al turn: si perde 1 Carta a scelta
+      4  in 3 giocatori un Jolly a testa
+      4  All-in disattivato dalle opzioni
+      3  ritiro dal Rilancio: si riprendono le Carte giocate, niente Bottino
+      3  opzione: le Carte del Fixer escono dal gioco
+      2  arresto immediato solo con meno di 2 Carte nella Banda
+      2  ritiro al flop: non si perde nulla
+      2  Guardie Allertate dall'Ingresso incognito
+      2  Pentito: la Banda scarta 1 Carta a caso
+      2  Rilancio: 4ª e 5ª Carta insieme
+      2  Bottino pescato per Banale/Discreto
+      2  Guardie dello Scasso brutale (Eureka)
+      1  chi si ritira esce dal Confronto e dal Bottino
+      1  Guardie dello Scasso professionale (Eureka)
+      1  Guardie dello Scasso nessuno
+      1  baciamano: scambio Carta in mano / Carta rivelata
+      1  baciamano una volta per Confronto
+      1  All-in: 5 nuove Carte, 2 Carte per Pentito, si perde il Bottino
+      1  All-in riuscito: liberi a mani vuote
+      1  Rilancio fallito: si perdono Bottino e Carte giocate
