@@ -14,6 +14,7 @@ Sviluppato con il consenso di Alessandro Buniotto e promosso dalla Taverna di Gu
 - **La Grande Fuga**: Auto da corsa, Pentiti, Confronto con la mano unica della Banda, **All-in** opzionale.
 - **Epilogo** con il riepilogo dei rischi corsi, per il confronto finale con gli *Appunti sulla Ludopatia* del manuale.
 - Schede dei Ladri con le 3 domande di Background; messaggi in chat con le carte; "Annulla ultima mossa" per il Croupier.
+- **La grafica del manuale**: sfondo d'ingresso e scena del mondo, un'illustrazione per ogni Fase, i ritratti delle Classi, e una **Guida** (regole in breve, Classi, sicurezza, crediti) nello stile del libro. Le illustrazioni si rigenerano dal PDF con `tools/extract-art.py`.
 
 ## Come si gioca
 
@@ -34,7 +35,8 @@ In sviluppo: collega la cartella del repo in `Data/systems/guardie-e-ladri` (jun
 ## Sviluppo
 
 ```
-npm test                         # test delle regole (node --test)
+npm test                         # 254 test delle regole (node --test), 228 scritti dal manuale da un tester indipendente
+node tests/e2e/foundry-e2e.mjs   # partita completa con GM + 3 giocatori collegati (Playwright, Foundry acceso su localhost:30000)
 node tools/build.mjs --repo owner/repo   # zip + manifesto in dist/
 ```
 
@@ -42,4 +44,4 @@ Struttura: `module/core` (carte e tabelle, funzioni pure), `module/game/engine.m
 
 ## Licenza
 
-Codice MIT. Il gioco *Guardie & Ladri*, i suoi testi, tabelle e illustrazioni appartengono a Atropo Kelevra e agli autori.
+Codice MIT. Il gioco *Guardie & Ladri*, i suoi testi, tabelle e illustrazioni (Luca Erbetta, graphic design di Carolina Fiandri) appartengono ad Atropo Kelevra e agli autori, e sono usati nel sistema con il loro consenso.

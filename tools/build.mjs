@@ -37,7 +37,7 @@ rmSync(dist, { recursive: true, force: true });
 mkdirSync(stage, { recursive: true });
 
 const packageEntries = [
-  "module", "templates", "styles", "lang", "README.md", "LICENSE",
+  "module", "templates", "styles", "lang", "assets", "README.md", "LICENSE",
 ];
 for (const entry of packageEntries) {
   const destination = join(stage, entry);

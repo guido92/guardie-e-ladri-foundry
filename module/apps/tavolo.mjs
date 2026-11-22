@@ -6,6 +6,8 @@ import { GLGame, controlla, ladriDi, SYSTEM_ID } from "../game/gl-game.mjs";
 import { carteDaGiocare } from "../game/engine.mjs";
 import { cartaHTML } from "./carte-html.mjs";
 import { CLASSI, GRADI, LISTINO, ACCESSI, SCASSI, costoAccesso, costoScasso } from "../core/regole.mjs";
+import { arte, ritratto, ARTE_FASE } from "../data/arte.mjs";
+import { GLGuida } from "./guida.mjs";
 import { COMBINAZIONI, migliorCoppia, migliorMano, etichetta, parse, isJolly, trovaCombinazione } from "../core/carte.mjs";
 
 const { ApplicationV2 } = foundry.applications.api;
@@ -50,7 +52,11 @@ export class GLTavolo extends ApplicationV2 {
   sel = new Set();
 
   static open() {
-    GLTavolo.instance ??= new GLTavolo();
+    if (!GLTavolo.instance) {
+      const w = Math.min(1180, window.innerWidth - 340);
+      const h = Math.min(820, window.innerHeight - 40);
+      GLTavolo.instance = new GLTavolo({ position: { width: w, height: h, left: 110, top: 20 } });
+    }
     GLTavolo.instance.render({ force: true });
     return GLTavolo.instance;
   }
@@ -91,9 +97,26 @@ export class GLTavolo extends ApplicationV2 {
 
   _replaceHTML(result, content) {
     const scroll = content.querySelector(".gl-side")?.scrollTop ?? 0;
+    const main = content.querySelector(".gl-main")?.scrollTop ?? 0;
+    // i campi dei moduli (grado, partecipanti, menu...) non devono azzerarsi quando un altro fa una mossa
+    const valori = new Map();
+    for (const el of content.querySelectorAll("input[name], select[name], textarea[name]")) {
+      if (el.dataset.action) continue;
+      const k = `${el.name}|${el.type === "checkbox" ? el.value : ""}`;
+      valori.set(k, el.type === "checkbox" ? el.checked : el.value);
+    }
     content.replaceChildren(result);
+    for (const el of content.querySelectorAll("input[name], select[name], textarea[name]")) {
+      if (el.dataset.action) continue;
+      const k = `${el.name}|${el.type === "checkbox" ? el.value : ""}`;
+      if (!valori.has(k)) continue;
+      if (el.type === "checkbox") el.checked = valori.get(k);
+      else if (el.tagName !== "SELECT" || [...el.options].some((o) => o.value === valori.get(k))) el.value = valori.get(k);
+    }
     const side = content.querySelector(".gl-side");
     if (side) side.scrollTop = scroll;
+    const m = content.querySelector(".gl-main");
+    if (m) m.scrollTop = main;
   }
 
   // ---- senza partita --------------------------------------------------------
@@ -138,7 +161,7 @@ export class GLTavolo extends ApplicationV2 {
   }
 
   #logo() {
-    return `<div class="gl-logo"><span>GUARDIE</span><em>&amp;</em><span>LADRI</span></div>`;
+    return `<div class="gl-hero-intro"><img class="gl-cover" src="${arte("copertina")}" alt=""/><div><img class="gl-logo-img" src="${arte("logo")}" alt="Guardie & Ladri"/><p>Un GDR crime a carte da Poker di Atropo Kelevra.</p><button type="button" data-action="cmd" data-cmd="guida"><i class="fa-solid fa-book-open"></i> Guida, regole e crediti</button></div></div>`;
   }
 
   // ---- partita in corso -----------------------------------------------------
@@ -162,7 +185,9 @@ export class GLTavolo extends ApplicationV2 {
   /** La mano di questo Ladro è visibile a me? */
   #vede(st, l) {
     if (this.#comando(st, l)) return true;
-    const seduto = ladriDi(game.user, st).length > 0;
+    if (st.fase === "epilogo") return true;
+    // il Croupier non è un membro della Banda: non vede le mani mostrate ai complici
+    const seduto = !game.user.isGM && ladriDi(game.user, st).length > 0;
     if (seduto && (l.mostra || st.fase === "fuga")) return true;
     return false;
   }
@@ -200,8 +225,8 @@ export class GLTavolo extends ApplicationV2 {
     const cf = st.confronto;
     if (st.fase === "epilogo") return this.#epilogo(st);
     if (!cf) {
-      if (st.bottino) return this.#feltroVuoto("Divisione del Bottino");
-      return this.#feltroVuoto(
+      if (st.bottino) return this.#feltroVuoto(st, "Divisione del Bottino");
+      return this.#feltroVuoto(st, 
         {
           setup: "Il Croupier descrive l'ambientazione e il Grande Colpo. I Ladri si presentano.",
           lavoretti: "Un solo giorno per procurarsi le risorse: un Lavoretto a testa, da soli o in coppia.",
@@ -223,7 +248,10 @@ export class GLTavolo extends ApplicationV2 {
     const giocate = Object.entries(cf.giocate)
       .map(([k, carte]) => {
         const nome = k === "banda" ? "La Banda" : st.ladri.find((l) => l.id === k)?.nome;
-        const mie = k === "banda" ? this.#comandati(st).length > 0 : this.#comando(st, st.ladri.find((l) => l.id === k));
+        const mie =
+          k === "banda"
+            ? (!game.user.isGM && ladriDi(game.user, st).length > 0) || (game.user.isGM && game.settings.get(SYSTEM_ID, "vediTutto"))
+            : this.#comando(st, st.ladri.find((l) => l.id === k));
         const html = carte
           .map((c) => {
             const vis = scoperte || mie;
@@ -266,21 +294,31 @@ export class GLTavolo extends ApplicationV2 {
     </section>`;
   }
 
-  #feltroVuoto(testo) {
-    return `<section class="gl-feltro gl-feltro-vuoto"><div class="gl-logo gl-logo-sm"><span>GUARDIE</span><em>&amp;</em><span>LADRI</span></div><p>${esc(testo)}</p></section>`;
+  #feltroVuoto(st, testo) {
+    const img = arte(ARTE_FASE[st.fase] ?? "copertina");
+    return `<section class="gl-scena" style="--gl-scena:url('${foundry.utils.getRoute(img)}')"><div class="gl-scena-txt"><img class="gl-logo-img gl-logo-sm" src="${arte("logo")}" alt=""/><div class="gl-scena-fase">${FASI[st.fase]}</div><p>${esc(testo)}</p></div></section>`;
   }
 
   #epilogo(st) {
     const e = st.esito ?? {};
     const gradi = st.storico.map((x) => `<li>Lavoretto <strong>${GRADI[x.grado].nome}</strong> (${x.partecipanti.map((id) => esc(st.ladri.find((l) => l.id === id)?.nome)).join(" e ")}): ${esc(x.esito)}${x.rilancio ? ", con Rilancio" : ""}</li>`).join("");
     const pentiti = st.ladri.filter((l) => l.pentito).map((l) => esc(l.nome));
-    return `<section class="gl-feltro gl-epilogo gl-epi-${e.tipo}">
+    const c = st.colpo;
+    const colpo = [
+      c.accesso ? `<li>Accesso: <strong>${ACCESSI[c.accesso].nome}</strong></li>` : "",
+      c.scasso ? `<li>Scasso: <strong>${SCASSI[c.scasso].nome}</strong>${c.scasso === "nessuno" ? "" : ", Bottino Finale conquistato"}</li>` : "",
+      c.accesso ? `<li>Guardie Allertate in tutto: <strong>${c.guardie}</strong>${c.diversivo.length ? `, ${c.diversivo.length} Diversiv${c.diversivo.length === 1 ? "o" : "i"}` : ""}</li>` : "",
+      c.allIn ? `<li><strong>All-in</strong> nella Grande Fuga</li>` : "",
+      pentiti.length ? `<li>Pentiti: ${pentiti.join(", ")}</li>` : "",
+    ].join("");
+    const img = arte(["fuggiti", "fuggitiManiVuote"].includes(e.tipo) ? "fuga" : "berretto");
+    return `<section class="gl-feltro gl-epilogo gl-epi-${e.tipo}" style="--gl-scena:url('${foundry.utils.getRoute(img)}')">
       <div class="gl-epi-titolo">${esc(e.testo ?? "")}</div>
       ${pentiti.length ? `<p>Pentiti: ${pentiti.join(", ")} (sconto di pena).</p>` : ""}
       <div class="gl-debrief">
         <h4>Al termine dell'avventura</h4>
         <p>Parlate liberamente di com'è andata. Poi leggete insieme gli <em>Appunti sulla Ludopatia</em> del manuale, confrontandoli con i rischi corsi:</p>
-        <ul>${gradi || "<li>Nessun Lavoretto.</li>"}</ul>
+        <ul>${gradi || "<li>Nessun Lavoretto.</li>"}${colpo}</ul>
         <p class="gl-hint">Telefono Verde Nazionale per le problematiche legate al Gioco d'Azzardo: <strong>800 558822</strong> (anonimo e gratuito).</p>
       </div>
     </section>`;
@@ -311,7 +349,7 @@ export class GLTavolo extends ApplicationV2 {
           : "";
         return `<div class="gl-ladro ${mio ? "gl-mio" : ""}">
           <div class="gl-ladro-head">
-            <img src="${actor?.img ?? "icons/svg/mystery-man.svg"}" alt=""/>
+            <img src="${!actor?.img || actor.img.includes("mystery-man") ? ritratto(l.classe) : actor.img}" alt=""/>
             <div><a data-action="cmd" data-cmd="scheda" data-ladro="${l.id}"><strong>${esc(l.nome)}</strong></a><div class="gl-classe" title="${esc(CLASSI[l.classe].testo)}">${CLASSI[l.classe].nome} · ${CLASSI[l.classe].speciale}</div></div>
             <span class="gl-conta" title="Carte in mano">${l.mano.length}</span>
           </div>
@@ -324,7 +362,7 @@ export class GLTavolo extends ApplicationV2 {
     const selez = this.sel.size
       ? `<div class="gl-selezione">Selezionate: ${[...this.sel].map(etichetta).join(", ")} <a data-action="cmd" data-cmd="deseleziona">annulla</a>${this.#suggerimentoMano(st)}</div>`
       : `<div class="gl-selezione gl-vuoto">Clicca le Carte per selezionarle.</div>`;
-    return `<h3 class="gl-h3">La Banda</h3>${selez}${righe}`;
+    return `<h3 class="gl-h3">La Banda <a class="gl-guida-link" data-action="cmd" data-cmd="guida" title="Guida, regole e crediti"><i class="fa-solid fa-book-open"></i></a></h3>${selez}${righe}`;
   }
 
   #suggerimentoMano(st) {
@@ -368,12 +406,12 @@ export class GLTavolo extends ApplicationV2 {
     if (st.fase === "setup") {
       for (const l of miei.filter((x) => x.classe === "gangster" && !x.coppiaPronta)) {
         const valori = ["2", "3", "4", "5", "6", "7", "8", "9", "T"].map((v) => `<option value="${v}">${v === "T" ? "10" : v}</option>`).join("");
-        const semi = [["C", "♥"], ["Q", "♦"], ["F", "♣"], ["P", "♠"]].map(([s, sym]) => `<label class="gl-check"><input type="checkbox" name="semeG-${l.id}" value="${s}"/> ${sym}</label>`).join("");
+        const semi = [["C", "♥"], ["Q", "♦"], ["F", "♣"], ["P", "♠"]].map(([s, sym]) => `<label class="gl-check gl-seme ${"CQ".includes(s) ? "gl-seme-rosso" : ""}"><input type="checkbox" name="semeG-${l.id}" value="${s}"/> ${sym}</label>`).join("");
         parti.push(`<div class="gl-box"><h4>${esc(l.nome)}: Asso nella manica</h4><p class="gl-hint">Scegli una Coppia di numeri (2-10) e due semi: la prendi dal Mazzo della Banda.</p>
-          <div class="gl-row"><select name="valoreG-${l.id}">${valori}</select>${semi}${this.#btn("coppiaGangster", "Prendi la Coppia", { dati: { ladro: l.id }, icon: "hand" })}</div></div>`);
+          <div class="gl-row"><select class="gl-auto" name="valoreG-${l.id}">${valori}</select>${semi}${this.#btn("coppiaGangster", "Prendi la Coppia", { dati: { ladro: l.id }, icon: "hand" })}</div></div>`);
       }
       const manca = st.ladri.filter((l) => !l.coppiaPronta).map((l) => esc(l.nome));
-      if (gm) parti.push(`<div class="gl-row">${this.#btn("distribuisci", "Distribuisci le Carte", { icon: "clone", cls: "gl-primary", disabled: manca.length > 0, title: manca.length ? `Manca la Coppia di ${manca.join(", ")}` : "" })}</div>`);
+      if (gm) parti.push(`<div class="gl-row">${this.#btn("distribuisci", "Distribuisci le Carte", { icon: "clone", cls: "gl-primary", disabled: manca.length > 0 })}${manca.length ? `<span class="gl-hint">Prima ${manca.join(", ")} deve scegliere la Coppia del Gangster.</span>` : ""}</div>`);
       if (!parti.length) parti.push(`<p class="gl-hint">Il Croupier sta per distribuire le Carte.</p>`);
     }
 
@@ -457,6 +495,9 @@ export class GLTavolo extends ApplicationV2 {
             ${this.#btn("vota", "Incassa", { dati: { ladro: l.id, scelta: "incassa" }, icon: "sack-dollar", cls: "gl-primary" })}
             ${cf.round === 1 ? this.#btn("vota", "Rilancia!", { dati: { ladro: l.id, scelta: "rilancia" }, icon: "arrow-up-right-dots", cls: "gl-danger" }) : ""}</div></div>`);
         }
+        const attesa = cf.attivi.filter((id) => !cf.voti[id]).map((id) => esc(st.ladri.find((l) => l.id === id).nome));
+        if (attesa.length) out.push(`<p class="gl-hint">In attesa del voto di: ${attesa.join(", ")}.</p>`);
+        if (gm && attesa.length) out.push(`<div class="gl-row">${this.#btn("avanza", "Avanti (chi non ha votato incassa)", { icon: "forward-step" })}</div>`);
       }
     }
     return out.join("");
@@ -585,6 +626,8 @@ export class GLTavolo extends ApplicationV2 {
       case "vediTutto":
         await game.settings.set(SYSTEM_ID, "vediTutto", target.checked);
         return this.render();
+      case "guida":
+        return GLGuida.open();
       case "deseleziona":
         this.sel.clear();
         return this.render();

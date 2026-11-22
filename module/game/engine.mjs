@@ -536,6 +536,13 @@ const AZIONI = {
   /** Il GM forza il passo successivo: chi non ha deciso continua. */
   avanza(s, a, effects) {
     const cf = s.confronto ?? fail("Nessun Confronto in corso.");
+    if (cf.tipo === "lavoretto" && cf.step === "esito" && cf.esito === "successo") {
+      // chi non ha votato incassa
+      const manca = cf.attivi.filter((id) => !cf.voti[id]);
+      if (!manca.length) fail("Hanno già votato tutti.");
+      for (const id of manca.slice(0, -1)) cf.voti[id] = "incassa";
+      return AZIONI.vota(s, { ladro: manca.at(-1), scelta: "incassa" }, effects);
+    }
     if (cf.step !== "flop" && cf.step !== "turn") fail("Non c'è niente da far avanzare.");
     for (const id of cf.attivi) cf.decisioni[id] ??= "continua";
     controllaDecisioni(s, effects);
@@ -803,7 +810,7 @@ const AZIONI = {
     scarta(s, via);
     effects.push({
       tipo: "colpo",
-      testo: `Diversivo di ${l.nome}${a.descrizione ? ` (${a.descrizione})` : ""}: il Croupier gli toglie a caso ${etichetta(persa)}, ${l.nome} toglie ${via.length} Carte dal Mazzetto delle Guardie (ne restano ${s.mazzetto.length}).`,
+      testo: `Diversivo di ${l.nome}${a.descrizione ? ` (${a.descrizione})` : ""}: il Croupier toglie a caso ${etichetta(persa)} dalla sua mano, ${l.nome} toglie ${via.length} Carte dal Mazzetto delle Guardie (ne restano ${s.mazzetto.length}).`,
     });
   },
 
@@ -845,8 +852,14 @@ const AZIONI = {
       scarta(s, via);
       effects.push({ tipo: "guardie", testo: `L'Auto da corsa semina ${via.length} Guardie: restano ${s.mazzetto.length} Carte nel Mazzetto.` });
     }
-    if (s.mazzetto.length < 2) return chiudiFuga(s, s.bottinoFinale ? "fuggiti" : "fuggitiManiVuote", effects);
-    if (totaleCarte(s) < 2) return chiudiFuga(s, "arrestati", effects);
+    if (s.mazzetto.length < 2) {
+      effects.push({ tipo: "info", testo: "Al Mazzetto delle Guardie restano meno di 2 Carte: la Banda scappa senza ulteriori difficoltà." });
+      return chiudiFuga(s, s.bottinoFinale ? "fuggiti" : "fuggitiManiVuote", effects);
+    }
+    if (totaleCarte(s) < 2) {
+      effects.push({ tipo: "info", testo: "Alla Banda restano meno di 2 Carte in tutto: finisce in gattabuia senza opporre resistenza." });
+      return chiudiFuga(s, "arrestati", effects);
+    }
     nuovoConfronto(s, "fuga", { partecipanti: s.ladri.map((l) => l.id), attivi: s.ladri.map((l) => l.id) }, effects);
   },
 
@@ -864,6 +877,7 @@ const AZIONI = {
     const pentiti = s.ladri.filter((l) => l.pentito).length;
     s.mazzetto.push(...pesca(s, "c", 2 * pentiti, effects));
     cf.round = "allin";
+    s.colpo.allIn = true;
     cf.esito = null;
     cf.manoLadri = cf.manoCroupier = null;
     cf.ladyUsata = false;

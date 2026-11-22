@@ -1,0 +1,14 @@
+import { chromium } from "playwright-core";
+const b = await chromium.launch({ channel: "chrome", headless: true });
+const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+const p = await ctx.newPage();
+const bad = new Set();
+p.on("response", (r) => { if (r.status() === 404) bad.add(r.url()); });
+await p.goto("http://localhost:30000/join");
+await p.selectOption('select[name="userId"]', { label: "Carla" });
+await p.click('button:has-text("Join")');
+await p.waitForURL(/game/);
+await p.waitForFunction(() => window.game?.ready, null, { timeout: 60000 });
+await p.waitForTimeout(4000);
+console.log([...bad]);
+await b.close();

@@ -4,6 +4,7 @@
  */
 import { apply, newGame, EngineError } from "./engine.mjs";
 import { chatForEffect } from "./chat.mjs";
+import { ritratto } from "../data/arte.mjs";
 
 export const SYSTEM_ID = "guardie-e-ladri";
 const CHANNEL = `system.${SYSTEM_ID}`;
@@ -39,9 +40,18 @@ export function ladriDi(user, st) {
   return (st?.ladri ?? []).filter((l) => controlla(user, st, l.id));
 }
 
+/** Le carte indicate stanno in mani che l'utente può usare (le sue o quelle mostrate alla Banda)? */
+function carteUsabili(user, st, carte) {
+  return (carte ?? []).every((c) => {
+    const l = st.ladri.find((x) => x.mano.includes(c));
+    if (!l) return true; // carta inesistente: ci pensa il motore a rifiutarla
+    return controlla(user, st, l.id) || l.mostra || st.fase === "fuga";
+  });
+}
+
 function allowed(action, st, user) {
   if (user.isGM) return true;
-  if (SOLO_GM.has(action.type)) return false;
+  if (SOLO_GM.has(action.type) || (action.type === "compra" && action.gratis)) return false;
   const seduto = ladriDi(user, st).length > 0;
   if (!seduto) return false;
   if (DEL_LADRO.has(action.type)) return controlla(user, st, action.ladro);
@@ -49,7 +59,7 @@ function allowed(action, st, user) {
     case "gioca":
       return st.confronto?.tipo === "fuga" ? true : controlla(user, st, action.ladro);
     case "compra":
-      return !action.gratis;
+      return carteUsabili(user, st, action.carte);
     case "bottinoAssegna":
     case "bottinoDividi":
       return !!st.bottino?.partecipanti.some((id) => controlla(user, st, id));
@@ -57,6 +67,7 @@ function allowed(action, st, user) {
       return st.confronto?.tipo === "fuga" || !!st.confronto?.attivi.some((id) => controlla(user, st, id));
     case "accesso":
     case "scasso":
+      return carteUsabili(user, st, action.carte);
     case "allIn":
       return true;
     default:
@@ -99,12 +110,45 @@ export class GLGame {
     });
   }
 
+  /** Identificativo di questo client (lo stesso utente GM può avere più schede aperte). */
+  static #sid = foundry.utils.randomID();
+  /** Altri client dello stesso utente GM: sid -> ultimo segnale. */
+  static #altriGM = new Map();
+  /** Le azioni si eseguono una alla volta, in ordine di arrivo. */
+  static #coda = Promise.resolve();
+
+  /**
+   * Tra i client del GM attivo, uno solo esegue le azioni: quello con l'identificativo minore
+   * tra quelli che hanno dato segni di vita negli ultimi 30 secondi.
+   */
+  static get esecutore() {
+    const gm = game.users.activeGM;
+    if (!gm?.isSelf) return false;
+    const ora = Date.now();
+    const vivi = [...GLGame.#altriGM.entries()].filter(([, v]) => v.userId === gm.id && ora - v.t < 30000).map(([k]) => k);
+    return [GLGame.#sid, ...vivi].sort()[0] === GLGame.#sid;
+  }
+
+  static #presenza(risposta = false) {
+    if (!game.user.isGM) return;
+    game.socket.emit(CHANNEL, { type: "presenza", sid: GLGame.#sid, userId: game.user.id, risposta });
+  }
+
   static activateSocket() {
+    GLGame.#presenza();
+    setInterval(() => GLGame.#presenza(), 10000);
+    window.addEventListener("beforeunload", () => game.socket.emit(CHANNEL, { type: "addio", sid: GLGame.#sid }));
     game.socket.on(CHANNEL, (msg) => {
-      if (msg.type === "action") {
-        if (game.users.activeGM?.isSelf) GLGame.#run(msg.action, msg.userId);
+      if (msg.type === "presenza") {
+        const nuovo = !GLGame.#altriGM.has(msg.sid);
+        GLGame.#altriGM.set(msg.sid, { userId: msg.userId, t: Date.now() });
+        if (nuovo && !msg.risposta) GLGame.#presenza(true);
+      } else if (msg.type === "addio") {
+        GLGame.#altriGM.delete(msg.sid);
+      } else if (msg.type === "action") {
+        if (GLGame.esecutore) GLGame.#accoda(msg.action, msg.userId);
       } else if (msg.type === "creaLadro") {
-        if (game.users.activeGM?.isSelf) GLGame.#creaLadro(msg.userId, msg);
+        if (GLGame.esecutore) GLGame.#creaLadro(msg.userId, msg);
       } else if (msg.type === "ladroCreato" && msg.to === game.user.id) {
         game.actors.get(msg.actorId)?.sheet.render(true);
       } else if (msg.type === "error" && msg.to === game.user.id) {
@@ -119,8 +163,14 @@ export class GLGame {
       ui.notifications.error("Serve il Croupier (un GM) connesso per giocare al Tavolo.");
       return;
     }
-    if (game.users.activeGM.isSelf) return GLGame.#run(action, game.user.id);
+    if (GLGame.esecutore) return GLGame.#accoda(action, game.user.id);
     game.socket.emit(CHANNEL, { type: "action", userId: game.user.id, action });
+  }
+
+  static #accoda(action, userId) {
+    const p = GLGame.#coda.then(() => GLGame.#run(action, userId));
+    GLGame.#coda = p.catch(() => {});
+    return p;
   }
 
   static async #run(action, userId) {
@@ -131,11 +181,13 @@ export class GLGame {
       if (!st && action.type !== "newGame") throw new EngineError("Nessuna partita in corso.");
       if (!allowed(action, st, user)) {
         throw new EngineError(
-          SOLO_GM.has(action.type)
+          SOLO_GM.has(action.type) || (action.type === "compra" && action.gratis)
             ? "Questa mossa spetta al Croupier."
             : !ladriDi(user, st).length
               ? "Non siedi al Tavolo: il Croupier deve assegnarti un Ladro."
-              : "Non puoi fare questa mossa per un altro Ladro.",
+              : ["compra", "accesso", "scasso"].includes(action.type)
+                ? "Puoi pagare solo con le tue Carte o con quelle che i complici mostrano alla Banda."
+                : "Non puoi fare questa mossa per un altro Ladro.",
         );
       }
       if (action.type === "reset") {
@@ -174,8 +226,9 @@ export class GLGame {
   static async creaLadro({ nome, classe }) {
     const dati = { nome: String(nome ?? "").trim().slice(0, 40), classe };
     if (!dati.nome) return ui.notifications.warn("Scrivi il nome del Ladro.");
-    if (game.user.isGM) return GLGame.#creaLadro(game.user.id, dati);
+    if (GLGame.esecutore) return GLGame.#creaLadro(game.user.id, dati);
     if (!game.users.activeGM) return ui.notifications.error("Serve un GM connesso per creare il Ladro.");
+    if (game.user.isGM && !GLGame.esecutore) return game.socket.emit(CHANNEL, { type: "creaLadro", userId: game.user.id, ...dati });
     game.socket.emit(CHANNEL, { type: "creaLadro", userId: game.user.id, ...dati });
   }
 
@@ -185,7 +238,7 @@ export class GLGame {
     const actor = await Actor.create({
       name: nome,
       type: "ladro",
-      img: "icons/svg/mystery-man.svg",
+      img: ritratto(classe),
       ownership: user.isGM
         ? { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.NONE }
         : { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.LIMITED, [userId]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER },

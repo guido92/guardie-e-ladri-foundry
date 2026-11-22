@@ -1,3 +1,7 @@
 node_modules/
 dist/
 *.zip
+tests/e2e/runner/node_modules/
+tests/e2e/runner/package-lock.json
+tests/e2e/screenshots/
+tests/e2e/ultima-corsa.txt
