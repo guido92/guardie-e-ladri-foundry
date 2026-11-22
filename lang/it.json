@@ -1,0 +1,10 @@
+{
+  "TYPES": {
+    "Actor": {
+      "ladro": "Ladro"
+    }
+  },
+  "GL": {
+    "Tavolo": "Tavolo di Guardie & Ladri"
+  }
+}

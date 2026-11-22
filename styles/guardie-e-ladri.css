@@ -1,0 +1,184 @@
+/* Guardie & Ladri — tavolo da poker noir */
+.guardie-e-ladri {
+  --gl-felt: #0f3d2c;
+  --gl-felt-2: #0a2c20;
+  --gl-ink: #ece6d6;
+  --gl-gold: #d4a63a;
+  --gl-red: #c0392b;
+  --gl-panel: #16181d;
+  --gl-panel-2: #1f232a;
+  --gl-line: #343a44;
+}
+
+.gl-tavolo .window-content {
+  padding: 0;
+  background: var(--gl-panel);
+  color: var(--gl-ink);
+  font-family: "Signika", sans-serif;
+}
+.gl-root { height: 100%; }
+.gl-layout { display: grid; grid-template-columns: 1fr 330px; height: 100%; }
+.gl-main { display: flex; flex-direction: column; min-width: 0; overflow-y: auto; }
+.gl-side { border-left: 1px solid var(--gl-line); overflow-y: auto; padding: 8px 10px; background: var(--gl-panel-2); }
+
+.gl-tavolo button { background: #2b313b; color: var(--gl-ink); border: 1px solid #485160; border-radius: 4px; padding: 3px 10px; line-height: 1.6; width: auto; flex: 0 0 auto; }
+.gl-tavolo button:hover:not(:disabled) { border-color: var(--gl-gold); box-shadow: 0 0 6px rgba(212, 166, 58, 0.4); }
+.gl-tavolo button:disabled { opacity: 0.45; }
+.gl-tavolo button.gl-primary { background: #7a5a14; border-color: var(--gl-gold); color: #fff; }
+.gl-tavolo button.gl-danger { background: #5e1c16; border-color: var(--gl-red); }
+.gl-tavolo input[type="text"], .gl-tavolo select { background: #0f1115; color: var(--gl-ink); border: 1px solid #485160; }
+.gl-tavolo a { color: var(--gl-gold); cursor: pointer; }
+
+.gl-bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; padding: 6px 12px; background: #0b0c0f; border-bottom: 2px solid var(--gl-gold); }
+.gl-fase { font-weight: 700; letter-spacing: 0.04em; color: var(--gl-gold); text-transform: uppercase; font-size: 14px; }
+.gl-stats { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.gl-stat { background: #1d2128; border: 1px solid var(--gl-line); padding: 1px 7px; border-radius: 10px; font-size: 12px; }
+.gl-stat.gl-m-b i { color: #5b8fd6; }
+.gl-stat.gl-m-c i { color: #d65b5b; }
+
+.gl-badge { display: inline-block; font-size: 11px; padding: 0 6px; border-radius: 8px; background: #333a45; margin: 1px 2px 1px 0; white-space: nowrap; }
+.gl-badge-red { background: var(--gl-red); color: #fff; }
+.gl-badge-gold { background: var(--gl-gold); color: #1a1205; }
+.gl-badge-green { background: #2e7d4f; color: #fff; }
+
+/* feltro */
+.gl-feltro {
+  margin: 10px;
+  border-radius: 90px / 60px;
+  background: radial-gradient(ellipse at center, #155a40 0%, var(--gl-felt) 55%, var(--gl-felt-2) 100%);
+  border: 10px solid #3b2414;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6), 0 4px 14px rgba(0, 0, 0, 0.5);
+  padding: 12px 24px 16px;
+  min-height: 330px;
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.gl-feltro-vuoto { min-height: 150px; align-items: center; justify-content: center; text-align: center; }
+.gl-feltro-head { display: flex; justify-content: space-between; align-items: baseline; }
+.gl-titolo { font-weight: 700; color: var(--gl-gold); font-size: 15px; }
+.gl-step { font-size: 12px; opacity: 0.8; }
+.gl-zona { display: flex; align-items: center; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.gl-zona-tavolo { flex-direction: column; }
+.gl-lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.8; text-align: center; }
+.gl-carte { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.gl-board { justify-content: center; gap: 10px; }
+.gl-giocata { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 4px 8px; border-radius: 8px; background: rgba(0, 0, 0, 0.18); }
+.gl-attesa { opacity: 0.55; }
+.gl-crou-mano { max-width: 100%; padding: 4px 8px; border: 1px dashed rgba(255, 255, 255, 0.25); border-radius: 8px; }
+
+.gl-esito { margin-top: 4px; padding: 4px 16px; border-radius: 6px; display: flex; gap: 12px; align-items: center; font-size: 13px; }
+.gl-esito strong { font-size: 18px; letter-spacing: 0.08em; }
+.gl-esito-successo { background: rgba(46, 125, 79, 0.85); }
+.gl-esito-fallimento { background: rgba(140, 30, 25, 0.85); }
+
+/* carte */
+.gl-carta {
+  position: relative;
+  width: 62px;
+  height: 88px;
+  border-radius: 6px;
+  background: #fbf8f0;
+  color: #111;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  flex: 0 0 auto;
+  user-select: none;
+  font-family: Georgia, serif;
+  border: 1px solid #bbb;
+  transition: transform 0.12s;
+}
+.gl-carta[data-action] { cursor: pointer; }
+.gl-carta[data-action]:hover { transform: translateY(-3px); }
+.gl-carta.gl-sel { transform: translateY(-8px); outline: 3px solid var(--gl-gold); }
+.gl-carta .gl-v { position: absolute; top: 3px; left: 5px; font-weight: 700; font-size: 16px; line-height: 1; }
+.gl-carta .gl-s { position: absolute; top: 20px; left: 5px; font-size: 13px; line-height: 1; }
+.gl-carta .gl-big { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 34px; padding-top: 10px; }
+.gl-rosso { color: #c0392b; }
+.gl-nero { color: #111; }
+.gl-carta.gl-m-c { background: #fdf1ee; border-color: #d9a49a; }
+.gl-carta.gl-m-c::after { content: ""; position: absolute; bottom: 4px; right: 4px; width: 6px; height: 6px; border-radius: 50%; background: #c0392b; }
+.gl-jolly { background: linear-gradient(160deg, #fff7d6, #f1d27a); color: #6b3d00; }
+.gl-jolly .gl-jw { position: absolute; bottom: 6px; left: 0; right: 0; text-align: center; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; }
+.gl-jolly .gl-s { font-size: 24px; top: 28px; left: 0; right: 0; text-align: center; }
+.gl-dorso { border: 3px solid #fbf8f0; }
+.gl-dorso-b { background: repeating-linear-gradient(45deg, #1f4f8f, #1f4f8f 4px, #2d64ac 4px, #2d64ac 8px); }
+.gl-dorso-c { background: repeating-linear-gradient(45deg, #8f1f1f, #8f1f1f 4px, #ac2d2d 4px, #ac2d2d 8px); }
+.gl-vuota { background: transparent; border: 2px dashed rgba(255, 255, 255, 0.25); box-shadow: none; }
+.gl-carta.gl-mini { width: 32px; height: 45px; border-radius: 4px; }
+.gl-carta.gl-mini .gl-v { font-size: 11px; top: 2px; left: 3px; }
+.gl-carta.gl-mini .gl-s { font-size: 10px; top: 14px; left: 3px; }
+.gl-carta.gl-mini .gl-big, .gl-carta.gl-mini .gl-jw { display: none; }
+.gl-carta.gl-mini.gl-dorso { border-width: 2px; }
+
+/* banda */
+.gl-h3 { color: var(--gl-gold); border-bottom: 1px solid var(--gl-line); margin: 4px 0 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; }
+.gl-ladro { background: #191c22; border: 1px solid var(--gl-line); border-radius: 8px; padding: 6px; margin-bottom: 8px; }
+.gl-ladro.gl-mio { border-color: var(--gl-gold); }
+.gl-ladro-head { display: flex; gap: 8px; align-items: center; }
+.gl-ladro-head img { width: 36px; height: 36px; border: none; border-radius: 50%; object-fit: cover; }
+.gl-ladro-head > div { flex: 1; }
+.gl-classe { font-size: 11px; opacity: 0.8; }
+.gl-conta { background: #2b313b; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.gl-mano { margin-top: 6px; gap: 4px; }
+.gl-mano .gl-carta:not(.gl-mini) { width: 48px; height: 68px; }
+.gl-mano .gl-carta:not(.gl-mini) .gl-big { font-size: 24px; }
+.gl-selezione { min-height: 26px; position: sticky; top: -8px; z-index: 2; font-size: 12px; background: #2a2412; border: 1px solid var(--gl-gold); border-radius: 6px; padding: 4px 6px; margin-bottom: 6px; }
+
+/* azioni */
+.gl-azioni { padding: 0 12px 12px; display: flex; flex-direction: column; gap: 8px; }
+.gl-box { background: var(--gl-panel-2); border: 1px solid var(--gl-line); border-radius: 8px; padding: 8px 10px; }
+.gl-box h3, .gl-box h4 { margin: 0 0 4px; color: var(--gl-gold); border: none; }
+.gl-box.gl-gm { border-color: #6b2a24; }
+.gl-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin: 4px 0; }
+.gl-row input[type="text"] { flex: 1 1 200px; }
+.gl-col { display: flex; flex-direction: column; gap: 3px; }
+.gl-check { display: inline-flex; gap: 4px; align-items: center; }
+.gl-mini-check { font-size: 11px; margin-top: 4px; }
+.gl-hint { font-size: 12px; opacity: 0.75; margin: 2px 0; }
+.gl-nowrap { white-space: nowrap; }
+.gl-listino { width: 100%; border-collapse: collapse; font-size: 12px; }
+.gl-listino td, .gl-listino th { border-bottom: 1px solid var(--gl-line); padding: 4px; text-align: left; vertical-align: middle; }
+.gl-listino tr.gl-preso { opacity: 0.55; }
+.gl-listino select { max-width: 130px; }
+.gl-scelta { max-height: 170px; overflow-y: auto; gap: 3px; padding: 4px; background: #0f1115; border-radius: 6px; }
+
+/* intro & epilogo */
+.gl-intro { padding: 16px 24px; overflow-y: auto; height: 100%; display: flex; flex-direction: column; gap: 12px; }
+.gl-logo { display: flex; gap: 10px; align-items: baseline; justify-content: center; font-family: Georgia, serif; font-weight: 900; font-size: 42px; letter-spacing: 0.08em; color: var(--gl-ink); text-shadow: 0 3px 0 #000; }
+.gl-logo em { color: var(--gl-gold); font-style: normal; }
+.gl-logo-sm { font-size: 30px; opacity: 0.35; }
+.gl-epilogo { align-items: center; text-align: center; justify-content: center; }
+.gl-epi-titolo { font-size: 24px; font-weight: 800; color: var(--gl-gold); text-shadow: 0 2px 0 #000; }
+.gl-epi-arrestati .gl-epi-titolo, .gl-epi-penaDura .gl-epi-titolo { color: #ff8a7a; }
+.gl-debrief { background: rgba(0, 0, 0, 0.35); border-radius: 8px; padding: 8px 14px; max-width: 640px; text-align: left; }
+
+/* chat */
+.gl-chat h4 { margin: 0 0 2px; font-weight: 700; color: #7a5a14; border-bottom: 1px solid #c9b27a; }
+.gl-chat p { margin: 2px 0; }
+.gl-chat-row { display: flex; gap: 3px; align-items: center; flex-wrap: wrap; margin-top: 3px; }
+.gl-chat-row > span { font-size: 11px; width: 52px; opacity: 0.8; }
+.gl-chat-esito.gl-chat-successo h4 { color: #1e6b3f; }
+.gl-chat-esito.gl-chat-fallimento h4 { color: #a8291f; }
+.gl-chat .gl-carta.gl-mini { width: 26px; height: 37px; }
+.gl-open-table { margin: 4px 0; }
+
+/* scheda */
+.gl-sheet .window-content { padding: 0; }
+.gl-sheet-body { padding: 10px 14px; display: flex; flex-direction: column; gap: 8px; }
+.gl-sheet-head { display: flex; gap: 10px; align-items: center; }
+.gl-sheet-img { width: 80px; height: 80px; border-radius: 8px; object-fit: cover; }
+.gl-sheet-titles { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.gl-sheet-name { font-size: 22px; font-weight: 700; height: auto; }
+.gl-field { display: flex; gap: 6px; align-items: center; }
+.gl-field.gl-col { flex-direction: column; align-items: stretch; }
+.gl-field > span { font-weight: 600; font-size: 13px; }
+.gl-speciale { border: 2px solid #b08a2e; border-radius: 8px; padding: 6px 10px; background: rgba(212, 166, 58, 0.08); }
+.gl-speciale-k { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.7; }
+.gl-speciale-t { font-weight: 800; font-size: 16px; }
+.gl-speciale p { margin: 2px 0 0; }
+.gl-sheet .gl-h3 { color: #7a5a14; }
+.gl-ingioco { background: rgba(0, 0, 0, 0.06); border-radius: 6px; padding: 4px 8px; }
+.gl-sheet prose-mirror { min-height: 120px; }
+.gl-selezione.gl-vuoto { border-color: var(--gl-line); background: #191c22; opacity: 0.7; }
+.gl-crou-mano .gl-carte { justify-content: center; }

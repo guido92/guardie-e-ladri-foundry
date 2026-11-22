@@ -1,0 +1,46 @@
+{
+  "id": "guardie-e-ladri",
+  "title": "Guardie & Ladri",
+  "description": "<p>Sistema non ufficiale per giocare a <strong>Guardie &amp; Ladri</strong> (Atropo Kelevra), il GDR crime a carte da Poker, da remoto: i due Mazzi, il Confronto alla Texas hold'em con Rilancio, i Lavoretti e la Tabella del Grado di Rischio, il Fixer, il Grande Colpo e la Grande Fuga, con le Caratteristiche Speciali delle quattro Classi.</p>",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14.369"
+  },
+  "authors": [
+    {
+      "name": "Michael Guidotti"
+    }
+  ],
+  "esmodules": [
+    "module/guardie-e-ladri.mjs"
+  ],
+  "styles": [
+    "styles/guardie-e-ladri.css"
+  ],
+  "languages": [
+    {
+      "lang": "it",
+      "name": "Italiano",
+      "path": "lang/it.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "ladro": {
+        "htmlFields": [
+          "note"
+        ]
+      }
+    }
+  },
+  "socket": true,
+  "grid": {
+    "distance": 1,
+    "units": ""
+  },
+  "background": "",
+  "url": "",
+  "manifest": "",
+  "download": ""
+}

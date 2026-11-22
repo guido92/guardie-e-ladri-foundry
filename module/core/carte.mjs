@@ -1,6 +1,6 @@
 /**
  * Carte da Poker: identificativi, mazzi, mescolata con seme, valutazione delle mani
- * (Texas hold'em, Jolly jolly) e combinazioni richieste da Fixer, Accesso e Scasso.
+ * (Texas hold'em, con i Jolly) e combinazioni richieste da Fixer, Accesso e Scasso.
  * Funzioni pure: nessun riferimento a Foundry.
  *
  * Una carta è una stringa "<mazzo>:<valore><seme>":

@@ -1,0 +1,55 @@
+<section class="gl-sheet-body">
+  <header class="gl-sheet-head">
+    <img class="gl-sheet-img" src="{{actor.img}}" data-edit="img" alt="" />
+    <div class="gl-sheet-titles">
+      <input class="gl-sheet-name" type="text" name="name" value="{{actor.name}}" placeholder="Nome del Ladro" {{#unless editable}}disabled{{/unless}} />
+      <label class="gl-field">
+        <span>Classe</span>
+        <select name="system.classe" {{#unless editable}}disabled{{/unless}}>
+          {{#each classi}}<option value="{{k}}" {{#if sel}}selected{{/if}}>{{nome}}</option>{{/each}}
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <div class="gl-speciale">
+    <div class="gl-speciale-k">Caratteristica Speciale</div>
+    <div class="gl-speciale-t">{{classe.speciale}}</div>
+    <p>{{classe.testo}}</p>
+  </div>
+
+  <label class="gl-field gl-col">
+    <span>Aspetto</span>
+    <textarea name="system.aspetto" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.aspetto}}</textarea>
+  </label>
+
+  <h3 class="gl-h3">Background</h3>
+  <label class="gl-field gl-col">
+    <span>{{lookup domande 0}}</span>
+    <textarea name="system.perche" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.perche}}</textarea>
+  </label>
+  <label class="gl-field gl-col">
+    <span>{{lookup domande 1}}</span>
+    <textarea name="system.bottino" rows="2" {{#unless editable}}disabled{{/unless}}>{{system.bottino}}</textarea>
+  </label>
+  <div class="gl-field gl-col">
+    <span>{{lookup domande 2}}</span>
+    <label class="gl-check"><input type="checkbox" name="system.ricercato" {{checked system.ricercato}} {{#unless editable}}disabled{{/unless}} /> Ricercato (pesca 1 Carta in più, ma le Guardie ti conoscono)</label>
+    <textarea name="system.motivo" rows="2" placeholder="Per quale motivo?" {{#unless editable}}disabled{{/unless}}>{{system.motivo}}</textarea>
+  </div>
+
+  {{#if inGioco}}
+  <div class="gl-ingioco">
+    <strong>Al Tavolo:</strong> {{inGioco.carte}} Carte in mano{{#if inGioco.mano}} ({{inGioco.mano}}){{/if}}
+    {{#if inGioco.ricercato}} · <span class="gl-badge gl-badge-red">Ricercato</span>{{/if}}
+    {{#if inGioco.pentito}} · <span class="gl-badge">Pentito</span>{{/if}}
+  </div>
+  {{/if}}
+
+  <h3 class="gl-h3">Note</h3>
+  {{#if editable}}
+  <prose-mirror name="system.note" value="{{system.note}}" toggled>{{{noteHTML}}}</prose-mirror>
+  {{else}}
+  <div class="gl-notes">{{{noteHTML}}}</div>
+  {{/if}}
+</section>
