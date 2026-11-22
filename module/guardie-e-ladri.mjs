@@ -7,6 +7,8 @@ import * as carte from "./core/carte.mjs";
 Hooks.once("init", () => {
   console.log("Guardie & Ladri | inizializzazione del sistema");
   CONFIG.Actor.dataModels.ladro = LadroData;
+  CONFIG.Actor.typeLabels ??= {};
+  CONFIG.Actor.typeLabels.ladro = "Ladro"; // etichetta anche quando la lingua del client non è l'italiano
   foundry.applications.apps.DocumentSheetConfig.registerSheet(Actor, SYSTEM_ID, GLLadroSheet, {
     types: ["ladro"],
     makeDefault: true,
