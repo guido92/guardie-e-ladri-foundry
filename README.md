@@ -6,6 +6,10 @@ Sviluppato con il consenso degli autori dalla [Taverna di Guido](https://lataver
 
 Autori: [Officina Meningi](https://officinameningi.it/) · [Instagram](https://www.instagram.com/officinameningi/) · [Facebook](https://www.facebook.com/officinameningi/) · [YouTube](https://www.youtube.com/@officina_meningi).
 
+- Atropo Kelevra: [scheda su Officina Meningi](https://officinameningi.it/amo-team/atropo-kelevra/)
+- Alessandro Buniotto ed Elena Mutti (Boardgames Academy): [Instagram](https://www.instagram.com/boardgames_academy/) · [YouTube](https://www.youtube.com/channel/UCgdeBwcFmW1IgiRMqAXTiGw)
+- Luca Erbetta: [Instagram](https://www.instagram.com/lucaerbetta/)
+
 ![Il Tavolo durante un Lavoretto](docs/img/lavoretto_esito.jpg)
 
 📄 **[Presentazione in PDF](docs/Guardie-e-Ladri-Foundry-Presentazione.pdf)** (15 pagine: il Tavolo, le Fasi, le Classi, requisiti, installazione, link).

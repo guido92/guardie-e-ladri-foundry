@@ -92,8 +92,8 @@ function crediti() {
         <h2 class="gl-g-banner">Guardie &amp; Ladri — il GDR</h2>
         <dl class="gl-g-cred">
           <dt>Un gioco di</dt><dd>Atropo Kelevra, Valentino Sergi (Officina Meningi)</dd>
-          <dt>Regolamento</dt><dd>Alessandro Buniotto, Elena Mutti (Boardgames Academy)</dd>
-          <dt>Illustrazioni</dt><dd>Luca Erbetta</dd>
+          <dt>Regolamento</dt><dd>Alessandro Buniotto, Elena Mutti (Boardgames Academy, <a href="https://www.instagram.com/boardgames_academy/" target="_blank">@boardgames_academy</a>)</dd>
+          <dt>Illustrazioni</dt><dd>Luca Erbetta (<a href="https://www.instagram.com/lucaerbetta/" target="_blank">@lucaerbetta</a>)</dd>
           <dt>Graphic design</dt><dd>Carolina Fiandri</dd>
           <dt>Sviluppo</dt><dd>Officina Meningi — prima edizione, gennaio 2025</dd>
           <dt>Iniziativa editoriale</dt><dd>Auser "Un Po di Giochi", progetto "Giochi di Comunità" (Piano GAP - ATS Val Padana), con AUSER Dosolo/Pomponesco, Azienda Speciale Consortile Oglio Po, Consorzio Casalasco Servizi alla Persona, Fondazione ARCA Centro Mantovano di Solidarietà Onlus, Arca Formazione, CSV Lombardia Sud ETS</dd>
