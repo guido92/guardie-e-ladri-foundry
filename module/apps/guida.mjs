@@ -91,16 +91,17 @@ function crediti() {
       <div>
         <h2 class="gl-g-banner">Guardie &amp; Ladri — il GDR</h2>
         <dl class="gl-g-cred">
-          <dt>Un gioco di</dt><dd>Valentino Sergi, Alessandro Buniotto</dd>
-          <dt>Regolamento</dt><dd>Elena Mutti</dd>
+          <dt>Un gioco di</dt><dd>Atropo Kelevra, Valentino Sergi (Officina Meningi)</dd>
+          <dt>Regolamento</dt><dd>Alessandro Buniotto, Elena Mutti (Boardgames Academy)</dd>
           <dt>Illustrazioni</dt><dd>Luca Erbetta</dd>
           <dt>Graphic design</dt><dd>Carolina Fiandri</dd>
-          <dt>Editore</dt><dd>Atropo Kelevra — prima edizione, gennaio 2025</dd>
+          <dt>Sviluppo</dt><dd>Officina Meningi — prima edizione, gennaio 2025</dd>
           <dt>Iniziativa editoriale</dt><dd>Auser "Un Po di Giochi", progetto "Giochi di Comunità" (Piano GAP - ATS Val Padana), con AUSER Dosolo/Pomponesco, Azienda Speciale Consortile Oglio Po, Consorzio Casalasco Servizi alla Persona, Fondazione ARCA Centro Mantovano di Solidarietà Onlus, Arca Formazione, CSV Lombardia Sud ETS</dd>
           <dt>Ringraziamenti</dt><dd>Dr.ssa Sonia Rita Piana, Boardgames Academy, Sabrina Romeo</dd>
         </dl>
         <h2 class="gl-g-banner">Questo sistema per Foundry VTT</h2>
-        <p>Sistema non ufficiale realizzato da <strong>Michael Guidotti</strong> per la <strong>Taverna di Guido</strong>, con il consenso di Alessandro Buniotto. Il codice è sotto licenza MIT; il gioco, i testi, le tabelle e le illustrazioni appartengono ai rispettivi autori e all'editore. Per giocare serve il manuale.</p>
+        <p>Sistema non ufficiale realizzato da <strong>Michael Guidotti</strong> per la <strong>Taverna di Guido</strong>, con il consenso degli autori. Il codice è sotto licenza MIT; il gioco, i testi, le tabelle e le illustrazioni appartengono ai rispettivi autori. Per giocare serve il manuale, scaricabile gratis da <a href="https://officinameningi.it/guardie-ladri-il-gdr/" target="_blank">officinameningi.it</a>.</p>
+        <p class="gl-g-mini">Sistema creato con il supporto dell'intelligenza artificiale.</p>
       </div>
     </div>`;
 }

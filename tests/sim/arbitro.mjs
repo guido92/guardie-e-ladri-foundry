@@ -395,6 +395,14 @@ export function creaArbitro({ apply, newGame }) {
         });
         comprati.push(ogg);
         rifiuta({ type: "compra", oggetto: ogg, gratis: true }, "non si compra due volte lo stesso articolo");
+      } else if (!pagamento && prob(0.4)) {
+        const jolly = s.jolly.length;
+        passo({ type: "compra", oggetto: ogg, gratis: true, destinatario: pick(s.ladri).id }, (a, b) => {
+          ok(b.acquisti.includes(ogg), "il Croupier può regalare un articolo (sconto del Fixer)");
+          if (ogg === "fumogeni" || ogg === "attrezzi") ok(b.jolly.length === Math.max(0, jolly - 1), "Fumogeni e Attrezzi danno 1 Jolly");
+          if (ogg === "documenti") ok(b.ladri.every((l) => !l.ricercato), "Documenti falsi annullano i Ricercati");
+        });
+        comprati.push(`${ogg} (regalo)`);
       } else if (!pagamento) {
         const sbagliate = mani.slice(0, { coppia: 2, coppiaFigure: 2, tris: 3, trisFigure: 3, full: 5, colore: 5, poker: 4, scala: 5 }[LISTINO[ogg][0]]);
         if (sbagliate.length && !LISTINO[ogg].some((t) => combo(t, sbagliate))) rifiuta({ type: "compra", oggetto: ogg, carte: sbagliate }, "il Fixer rifiuta un pagamento sbagliato");
@@ -438,7 +446,7 @@ export function creaArbitro({ apply, newGame }) {
     const bru = trova("pokerFigure", mani()) ?? (intel ? trova("doppiaCoppia", mani()) : null);
     if (bru) scassi.push("brutale");
     if (!acq("combinazione")) rifiuta({ type: "scasso", tipo: "professionale" }, "Scasso Professionale solo con la Combinazione");
-    const sc = scassi.length > 1 && prob(0.85) ? pick(scassi.filter((x) => x !== "nessuno")) : "nessuno";
+    const sc = scassi.length > 1 && prob(0.9) ? pick(scassi.filter((x) => x !== "nessuno")) : "nessuno";
     const g0 = s.colpo.guardie;
     const mz0 = s.mazzetto.length;
     const guardieS = sc === "professionale" ? 0 : sc === "tecnico" ? (intel ? Math.floor(nR() / 2) : nR()) : n;

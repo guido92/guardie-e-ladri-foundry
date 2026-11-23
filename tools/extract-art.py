@@ -5,7 +5,7 @@ Estrae dal PDF di Guardie & Ladri le illustrazioni usate dall'interfaccia del si
     python tools/extract-art.py "C:/percorso/manuale.pdf"
 
 Scrive in assets/gl-art/. Le illustrazioni sono di Luca Erbetta, la grafica di Carolina Fiandri,
-il gioco di Atropo Kelevra: NON sono coperte dalla licenza MIT del codice.
+il gioco di Atropo Kelevra e Valentino Sergi (Officina Meningi): NON sono coperte dalla licenza MIT del codice.
 Gli xref sono quelli della prima edizione (gennaio 2025): con un'altra edizione lancia con --list.
 """
 import sys

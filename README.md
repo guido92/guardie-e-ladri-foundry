@@ -1,8 +1,10 @@
 # Guardie & Ladri — sistema per Foundry VTT
 
-Sistema **non ufficiale** per giocare a *Guardie & Ladri* (Atropo Kelevra, 2025 — di Valentino Sergi, Alessandro Buniotto ed Elena Mutti, illustrazioni di Luca Erbetta) su Foundry Virtual Tabletop v13/v14. Serve il manuale: qui c'è il tavolo, non il regolamento.
+Sistema **non ufficiale** per giocare a *Guardie & Ladri* (2025 — un gioco di Atropo Kelevra e Valentino Sergi, regolamento di Alessandro Buniotto ed Elena Mutti, illustrazioni di Luca Erbetta, sviluppato da Officina Meningi) su Foundry Virtual Tabletop v13/v14. Serve il manuale, che è gratuito: [officinameningi.it/guardie-ladri-il-gdr](https://officinameningi.it/guardie-ladri-il-gdr/).
 
-Sviluppato con il consenso di Alessandro Buniotto e promosso dalla Taverna di Guido.
+Sviluppato con il consenso degli autori dalla [Taverna di Guido](https://latavernadiguido.it/) · [Instagram](https://www.instagram.com/latavernadiguido) · [TikTok](https://www.tiktok.com/@tavernadiguido) · [YouTube](https://www.youtube.com/@LaTavernadiGuido) · [Twitch](https://www.twitch.tv/latavernadiguido) · [Discord](https://discord.gg/cXbKzYtFmP).
+
+Autori: [Officina Meningi](https://officinameningi.it/) · [Instagram](https://www.instagram.com/officinameningi/) · [Facebook](https://www.facebook.com/officinameningi/) · [YouTube](https://www.youtube.com/@officina_meningi).
 
 ![Il Tavolo durante un Lavoretto](docs/img/lavoretto_esito.jpg)
 
@@ -58,4 +60,6 @@ Struttura: `module/core` (carte e tabelle, funzioni pure), `module/game/engine.m
 
 ## Licenza
 
-Codice MIT. Il gioco *Guardie & Ladri*, i suoi testi, tabelle e illustrazioni (Luca Erbetta, graphic design di Carolina Fiandri) appartengono ad Atropo Kelevra e agli autori, e sono usati nel sistema con il loro consenso.
+Codice MIT. Il gioco *Guardie & Ladri*, i suoi testi, tabelle e illustrazioni (Luca Erbetta, graphic design di Carolina Fiandri) appartengono agli autori (Atropo Kelevra, Valentino Sergi, Alessandro Buniotto, Elena Mutti) e a Officina Meningi, e sono usati nel sistema con il loro consenso.
+
+*Sistema creato con il supporto dell'intelligenza artificiale.*

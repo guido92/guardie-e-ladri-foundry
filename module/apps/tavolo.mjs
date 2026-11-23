@@ -161,7 +161,7 @@ export class GLTavolo extends ApplicationV2 {
   }
 
   #logo() {
-    return `<div class="gl-hero-intro"><img class="gl-cover" src="${arte("copertina")}" alt=""/><div><img class="gl-logo-img" src="${arte("logo")}" alt="Guardie & Ladri"/><p>Un GDR crime a carte da Poker di Atropo Kelevra.</p><button type="button" data-action="cmd" data-cmd="guida"><i class="fa-solid fa-book-open"></i> Guida, regole e crediti</button></div></div>`;
+    return `<div class="gl-hero-intro"><img class="gl-cover" src="${arte("copertina")}" alt=""/><div><img class="gl-logo-img" src="${arte("logo")}" alt="Guardie & Ladri"/><p>Un GDR crime a carte da Poker di Atropo Kelevra e Valentino Sergi.</p><button type="button" data-action="cmd" data-cmd="guida"><i class="fa-solid fa-book-open"></i> Guida, regole e crediti</button></div></div>`;
   }
 
   // ---- partita in corso -----------------------------------------------------

@@ -1,6 +1,6 @@
 /**
  * Illustrazioni del manuale usate dall'interfaccia (Luca Erbetta, grafica di Carolina Fiandri,
- * Atropo Kelevra). Si estraggono dal PDF con tools/extract-art.py in assets/gl-art/.
+ * Officina Meningi). Si estraggono dal PDF con tools/extract-art.py in assets/gl-art/.
  */
 const BASE = "systems/guardie-e-ladri/assets/gl-art";
 
