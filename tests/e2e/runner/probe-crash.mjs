@@ -1,0 +1,38 @@
+import { chromium } from "playwright-core";
+const b = await chromium.launch({ channel: "chrome", headless: true });
+async function login(nome) {
+  const ctx = await b.newContext({ viewport: { width: 1440, height: 900 } });
+  const p = await ctx.newPage();
+  p.on("crash", () => console.log("CRASH", nome));
+  p.on("pageerror", (e) => console.log("ERR", nome, String(e).slice(0, 300)));
+  await p.goto("http://localhost:30000/join");
+  await p.waitForSelector('select[name="userId"]');
+  await p.$eval('select[name="userId"]', (s, n) => { const o = [...s.options].find((x) => x.textContent.trim() === n); o.disabled = false; s.value = o.value; }, nome);
+  await p.click('button[name="join"]');
+  await p.waitForURL(/game/);
+  await p.waitForFunction(() => window.game?.ready && game.gl, null, { timeout: 60000 });
+  return p;
+}
+const gm = await login("Gamemaster");
+const bob = await login("Bob"); const alice = await login("Alice"); const carla = await login("Carla");
+const d = async (a) => { await gm.evaluate((a) => game.gl.dispatch(a), a); await gm.waitForTimeout(700); };
+const st = () => gm.evaluate(() => game.gl.state);
+await d({ type: "reset" });
+const ladri = await gm.evaluate(() => game.actors.filter((a) => a.type === "ladro").map((a) => ({ id: a.id, nome: a.name, classe: a.system.classe, ricercato: a.system.ricercato, userId: game.users.find((u) => !u.isGM && a.testUserPermission(u, "OWNER"))?.id ?? null })));
+const id = (n) => ladri.find((l) => l.nome === n).id;
+await d({ type: "newGame", config: { ladri, seed: 99 } });
+await d({ type: "coppiaGangster", ladro: id("Gino"), valore: "7", semi: ["C", "P"] });
+await d({ type: "distribuisci" });
+await d({ type: "lavorettoInizia", grado: "tosto", partecipanti: [id("Lola")] });
+await d({ type: "decidi", ladro: id("Lola"), scelta: "continua" });
+console.log("turn ok");
+const c = (await st()).ladri.find((l) => l.nome === "Lola").mano[0];
+await d({ type: "decidi", ladro: id("Lola"), scelta: "ritira", carta: c });
+console.log("ritirato");
+await bob.waitForTimeout(1500);
+await gm.click(`#guardie-e-ladri-tavolo [data-cmd="annulla"]`); await gm.waitForTimeout(700);
+console.log("annullato");
+await bob.waitForTimeout(3000);
+console.log("bob vede", await bob.evaluate(() => ({ seq: game.gl.state?.seq, step: game.gl.state?.confronto?.step })));
+await d({ type: "reset" });
+await b.close();

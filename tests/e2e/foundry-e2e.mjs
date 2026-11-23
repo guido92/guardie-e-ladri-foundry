@@ -112,6 +112,7 @@ async function login(nome) {
       results.console.push({ client: nome, passo, tipo: m.type(), testo: t.slice(0, 500) });
     }
   });
+  page.on("crash", () => console.log(`  !! CRASH della pagina di ${nome} durante: ${passo}`));
   page.on("pageerror", (e) => results.console.push({ client: nome, passo, tipo: "pageerror", testo: String(e?.stack ?? e).slice(0, 800) }));
   await page.goto(`${URL}/join`);
   await page.waitForSelector('select[name="userId"]');
@@ -130,6 +131,10 @@ async function login(nome) {
   await page.click('button[name="join"]');
   await page.waitForURL(/\/game/, { timeout: 30000 });
   await page.waitForFunction(() => window.game?.ready && window.game.gl, null, { timeout: 90000 });
+  await page.evaluate(() => {
+    window.__socketLog = [];
+    game.socket.on("system.guardie-e-ladri", (m) => window.__socketLog.push(JSON.stringify(m)));
+  });
   await page.evaluate(() => {
     window.__notes = [];
     const N = ui.notifications;
@@ -180,20 +185,25 @@ async function until(pred, desc, timeout = 12000) {
   throw new Error(`Timeout: ${desc}`);
 }
 
-/** Attende che tutti i client abbiano lo stesso stato del GM e che il Tavolo sia ridisegnato. */
+/**
+ * Attende che tutti i client siano alla stessa versione dello stato del GM e che il Tavolo sia ridisegnato.
+ * (I giocatori ricevono solo la loro vista, con le Carte altrui coperte: si confronta il numero di versione.)
+ */
 async function sync() {
-  const ref = JSON.stringify(await gmState());
+  const pieno = await gmState();
+  const ref = JSON.stringify(pieno?.seq ?? null);
   for (const c of Object.values(clients)) {
     if (c.page.isClosed()) continue;
     const t0 = Date.now();
     while (Date.now() - t0 < 8000) {
-      const s = await c.page.evaluate(() => JSON.stringify(game.gl.state ?? null));
+      const s = await c.page.evaluate(() => JSON.stringify(game.gl.state?.seq ?? null));
       if (s === ref) break;
       await sleep(120);
     }
   }
+  const ref2 = JSON.stringify(pieno);
   await sleep(450);
-  return JSON.parse(ref);
+  return JSON.parse(ref2);
 }
 
 function sel(cmd, data = {}) {
@@ -348,6 +358,39 @@ async function visCheck(label, { chat = true } = {}) {
         if (k === "banda" && c.isGM && !scoperte && mie)
           nota(`${label}: il Croupier (GM) vede le 2 Carte coperte della Banda prima di scegliere le sue, perché comanda un Ladro senza giocatore`);
       }
+    }
+    // anche i dati che arrivano al client (impostazioni del mondo, socket, stato in memoria)
+    if (!c.isGM) {
+      const nascoste = (x) => {
+        const mm = modello(c, x, attivi);
+        const out = new Set();
+        for (const l of x.ladri) if (!mm.vede(l)) l.mano.forEach((k) => out.add(k));
+        x.mazzetto.forEach((k) => out.add(k));
+        x.mazzi.c.pesca.forEach((k) => out.add(k));
+        const sceglie = x.bottino?.daScegliere && x.bottino.partecipanti.some((id) => mm.controlla(x.ladri.find((l) => l.id === id)));
+        if (!sceglie) x.mazzi.b.pesca.forEach((k) => out.add(k));
+        const f = x.confronto;
+        if (f) {
+          const sc = f.step === "esito" || f.step === "bottino" || f.scoperte || f.round === 2 || f.round === "allin";
+          f.croupierMano.forEach((k) => out.add(k));
+          if (!sc) (f.croupierGioca ?? []).forEach((k) => out.add(k));
+          for (const [k, carte] of Object.entries(f.giocate)) if (!sc && !(k === "banda" ? mm.seduto : mm.comando(x.ladri.find((l) => l.id === k)))) carte.forEach((q) => out.add(q));
+        }
+        return out;
+      };
+      const dati = await c.page.evaluate(() => {
+        const out = [["stato", JSON.stringify(game.gl.state ?? null)]];
+        for (const v of game.settings.storage.get("world")?.contents ?? []) if (v.key?.startsWith("guardie-e-ladri.")) out.push([v.key, String(v.value)]);
+        const log = (window.__socketLog ?? []).splice(0);
+        const ultimaVista = log.filter((m) => JSON.parse(m).type === "vista").at(-1);
+        for (const m of log) if (JSON.parse(m).type !== "vista" || m === ultimaVista) out.push([`socket:${JSON.parse(m).type}`, m]);
+        return out;
+      });
+      // una Carta conta come trapelata solo se era nascosta prima e dopo la lettura (niente falsi allarmi a metà mossa)
+      const dopo = nascoste(await gmState());
+      const dove = (x) => dati.filter(([, t]) => t.includes(`"${x}"`) || t.includes(`\\"${x}\\"`)).map(([k]) => k);
+      const fuori = [...nascoste(st)].filter((x) => dopo.has(x) && dove(x).length).map((x) => `${x}@${dove(x).join("+")}`);
+      check(!fuori.length, `${label} [${c.nome}]: nessuna carta nascosta nei dati ricevuti (impostazioni, socket, stato)`, fuori.slice(0, 6));
     }
     const leak = d.titoli.filter((t) => [...vietate].some((x) => titolo(x) === t));
     check(!leak.length, `${label} [${c.nome}]: nessuna carta nascosta visibile nel Tavolo`, leak);

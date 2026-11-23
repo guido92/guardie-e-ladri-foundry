@@ -8,8 +8,9 @@ export function cartaHTML(id, { coperta = false, mini = false, sel = false, azio
   if (mini) cls.push("gl-mini");
   if (sel) cls.push("gl-sel");
   const act = azione ? ` data-action="${azione}" data-carta="${id ?? ""}"` : "";
-  if (coperta || !id) {
-    const m = id && !isJolly(id) ? parse(id).mazzo : dorso;
+  if (coperta || !id || id.startsWith("h:")) {
+    // "h:b3" = Carta coperta del Mazzo della Banda (segnaposto della vista privata)
+    const m = !id ? dorso : id.startsWith("h:") ? id[2] : isJolly(id) ? dorso : parse(id).mazzo;
     return `<div class="${cls.join(" ")} gl-dorso gl-dorso-${m}"${act}${extra}></div>`;
   }
   if (isJolly(id)) {

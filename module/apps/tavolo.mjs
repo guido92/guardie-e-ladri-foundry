@@ -26,8 +26,9 @@ const costoTesto = (tipi) => (tipi.length ? tipi.map((t) => COMBINAZIONI[t].nome
 
 /** Ordine di visualizzazione delle carte in mano. */
 function ordina(ids) {
+  const altro = (c) => isJolly(c) || c.startsWith("h:");
   return [...ids].sort((a, b) => {
-    if (isJolly(a) || isJolly(b)) return Number(isJolly(a)) - Number(isJolly(b));
+    if (altro(a) || altro(b)) return Number(altro(a)) - Number(altro(b));
     const x = parse(a);
     const y = parse(b);
     return x.v - y.v || x.s.localeCompare(y.s);

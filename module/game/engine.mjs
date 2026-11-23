@@ -382,8 +382,7 @@ function incassa(s, effects) {
     testo:
       daScegliere > 0
         ? `Bottino: ${daScegliere} Carte a scelta dal Mazzo della Banda.`
-        : `Bottino: ${elenco(carte)}.`,
-    carte,
+        : `Bottino: ${carte.length} Carte pescate dal Mazzo della Banda.`,
   });
   if (!daScegliere) dividiSeSolo(s, effects);
 }
@@ -666,7 +665,7 @@ const AZIONI = {
     mescolaMazzo(s, "b");
     b.carte.push(...carte);
     b.daScegliere = 0;
-    effects.push({ tipo: "bottino", testo: `Bottino scelto: ${elenco(carte)}. Il Mazzo della Banda viene rimescolato.`, carte });
+    effects.push({ tipo: "bottino", testo: `Bottino scelto: ${carte.length} Carte dal Mazzo della Banda, che viene rimescolato.` });
     dividiSeSolo(s, effects);
   },
 

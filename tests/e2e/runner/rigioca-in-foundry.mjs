@@ -39,15 +39,16 @@ for (const [i, partita] of partite.entries()) {
   for (const [k, m] of partita.mosse.entries()) {
     const r = await p.evaluate(
       async ({ azione, impronta }) => {
+        const senzaSeq = (s) => { if (!s) return s; const { seq, ...x } = s; return x; };
         await game.gl.dispatch(azione);
         const t0 = Date.now();
         while (Date.now() - t0 < 5000) {
-          if (window.__impronta(game.gl.state) === impronta) break;
+          if (window.__impronta(senzaSeq(game.gl.state)) === impronta) break;
           await new Promise((r) => setTimeout(r, 25));
         }
         await new Promise((r) => setTimeout(r, 30));
         const tav = document.querySelector("#guardie-e-ladri-tavolo .gl-root");
-        return { uguale: window.__impronta(game.gl.state) === impronta, tavolo: !!tav && tav.innerHTML.length > 200 };
+        return { uguale: window.__impronta(senzaSeq(game.gl.state)) === impronta, tavolo: !!tav && tav.innerHTML.length > 200 };
       },
       m,
     );

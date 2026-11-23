@@ -34,7 +34,7 @@ Autori: [Officina Meningi](https://officinameningi.it/) · [Instagram](https://w
 
 Serve un GM connesso: le mosse dei giocatori passano al suo client, che controlla le regole e salva lo stato.
 
-> Le Carte nascoste (mani degli altri, mano del Croupier) non vengono mostrate dall'interfaccia, ma lo stato della partita è condiviso tra i client: chi sa usare la console del browser potrebbe sbirciare. È un gioco tra amici.
+> **Le Carte nascoste restano nascoste anche nei dati.** Lo stato completo della partita è cifrato e lo legge solo il browser del Croupier; ogni giocatore riceve dal Croupier soltanto la propria vista, con le Carte altrui, la mano del Croupier e i mazzi coperti, e le mosse coperte viaggiano solo verso il Croupier. Nemmeno dalla console del browser si possono sbirciare. La chiave sta nel browser che ha aperto la partita: per continuarla da un altro computer del Croupier, copia la chiave con `game.gl.GLGame.esportaChiave()` e importala con `game.gl.GLGame.importaChiave("...")`.
 
 ## Anteprima
 
