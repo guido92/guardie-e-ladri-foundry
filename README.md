@@ -8,6 +8,8 @@ Autori: [Officina Meningi](https://officinameningi.it/) · [Instagram](https://w
 
 ![Il Tavolo durante un Lavoretto](docs/img/lavoretto_esito.jpg)
 
+📄 **[Presentazione in PDF](docs/Guardie-e-Ladri-Foundry-Presentazione.pdf)** (15 pagine: il Tavolo, le Fasi, le Classi, requisiti, installazione, link).
+
 ## Cosa fa
 
 - **I due Mazzi da Poker** (Banda e Croupier) e i **4 Jolly** custoditi dal Croupier, con mescolate e scarti gestiti dal tavolo.
