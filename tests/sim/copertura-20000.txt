@@ -1,0 +1,127 @@
+20000 partite in 649s · 2354139 controlli su 71 regole · problemi: 0
+
+REGOLE (volte verificate):
+         9  Guardie dello Scasso tecnico
+        18  Guardie dello Scasso tecnico (Eureka)
+       153  meno di 2 Carte al Fixer: tutti Ricercati, pesca chi non lo era
+       943  Guardie dello Scasso brutale (Eureka)
+      1177  fuga senza Confronto solo con meno di 2 Carte nel Mazzetto
+      1446  ritiro dal Rilancio: si riprendono le Carte giocate, niente Bottino
+      1595  All-in fallito: pena dura
+      1687  arresto immediato solo con meno di 2 Carte nella Banda
+      1883  All-in disattivato dalle opzioni
+      2073  Bottino pescato per Banale/Discreto
+      2151  Guardie dello Scasso professionale
+      2558  Rilancio fallito: si perdono Bottino e Carte giocate
+      2572  baciamano una volta per Confronto
+      2880  Guardie dello Scasso nessuno
+      3115  All-in riuscito: liberi a mani vuote
+      3208  Guardie Allertate dall'Ingresso secondario
+      3447  baciamano: scambio Carta in mano / Carta rivelata
+      4292  Guardie Allertate dall'Ingresso incognito
+      4710  All-in: 5 nuove Carte, 2 Carte per Pentito, si perde il Bottino
+      5002  Fuga fallita: arrestati
+      5092  chi si ritira esce dal Confronto e dal Bottino
+      5275  ritiro al turn: si perde 1 Carta a scelta
+      5394  Bottino a scelta per Tosto/Esagerato
+      5464  Rilancio: 4ª e 5ª Carta insieme
+      6049  Guardie dello Scasso professionale (Eureka)
+      6910  Rilancio: le Carte dei Ladri restano a terra
+      6910  Rilancio: il Croupier torna al numero della Tabella
+      6910  Rilancio: 3 nuove Carte sul tavolo
+      7091  ritiro al flop: non si perde nulla
+      7274  chi si ritira non fa altri Lavoretti
+      7930  Pentito: la Banda scarta 1 Carta a caso
+      7950  Guardie dello Scasso nessuno (Eureka)
+      8426  Documenti falsi annullano i Ricercati
+      9486  Ingresso Secondario solo con la Mappa
+      9790  opzione: le Carte del Fixer escono dal gioco
+     10582  Scasso Professionale solo con la Combinazione
+     12500  Guardie Allertate dall'Ingresso teatrale
+     12816  Diversivo: il Ladro perde 1 Carta
+     12816  Diversivo: tolte tante Carte quante le Guardie Allertate
+     13248  il Bottino finisce nelle mani della Banda
+     13335  Meccanico: 1 Carta all'inizio della Fuga
+     13336  in 3 giocatori un Jolly a testa
+     15627  esito della Fuga
+     15886  niente carte prima della Coppia del Gangster
+     15886  Coppia del Gangster solo di numeri 2-10
+     15886  Coppia del Gangster presa dal Mazzo
+     15918  Fuga: 4ª e 5ª Carta insieme
+     18313  Fuga: +1 Carta per Ladro al Mazzetto (meno con l'Auto da corsa)
+     20000  3 Carte del Croupier per ogni Guardia Allertata
+     20000  Scasso: 3 Carte per Guardia
+     20000  Bottino Finale solo se lo Scasso riesce
+     20000  la partita arriva all'Epilogo
+     20000  a partita finita non si gioca più
+     20336  Fallimento: si perdono solo le Carte giocate
+     22582  le Carte del Fixer tornano nel Mazzo della Banda
+     25116  Fumogeni e Attrezzi danno 1 Jolly
+     32372  acquisto dal Fixer con la combinazione del listino
+     32372  non si compra due volte lo stesso articolo
+     36503  5ª Carta
+     36503  il Croupier pesca le Carte della Tabella del Grado di Rischio
+     37588  dopo la 5ª Carta non ci si ritira più
+     38933  4ª Carta dopo il flop
+     39989  il Croupier può regalare un articolo (sconto del Fixer)
+     44181  flop: 3 Carte dalla cima del Mazzo della Banda
+     44537  esito del Confronto (Poker, parità al Croupier)
+     47633  da soli si giocano 2 Carte, in coppia 1 a testa
+     59087  il Fixer rifiuta un pagamento sbagliato
+     59999  mani iniziali (2, +1 Ricercato, +Coppia Gangster, +Jolly in 3 giocatori)
+     59999  un solo Lavoretto a testa
+    639695  108 carte, nessuna duplicata
+    639695  4 Jolly in gioco
+
+CASI DI GIOCO (partite in cui sono capitati):
+      4710  All-in
+      6668  Banda di 2 Ladri
+      6665  Banda di 3 Ladri
+      6667  Banda di 4 Ladri
+     15886  Classe gangster
+     14960  Classe intellettuale
+     15818  Classe lady
+     13335  Classe meccanico
+      9284  Diversivo
+      7765  Epilogo: arrestati
+      4444  Epilogo: fuggiti
+      6054  Epilogo: fuggitiManiVuote
+      1595  Epilogo: penaDura
+       142  Epilogo: pentiti
+      4292  Ingresso incognito
+      3208  Ingresso secondario
+     12500  Ingresso teatrale
+     11047  Lavoretto banale
+     28363  Lavoretto da solo
+     11077  Lavoretto discreto
+     11075  Lavoretto esagerato
+     15818  Lavoretto in coppia
+     10982  Lavoretto tosto
+      2558  Lavoretto: fallimento (rilancio)
+     20336  Lavoretto: fallimento
+      1446  Lavoretto: ritirati (rilancio)
+      6593  Lavoretto: ritirati
+      2906  Lavoretto: successo con rilancio (rilancio)
+     10342  Lavoretto: successo
+      6671  Pentiti nella Fuga
+       943  Scasso brutale
+     10830  Scasso nessuno
+      8200  Scasso professionale
+        27  Scasso tecnico
+     11024  acquisto attrezzi
+      9336  acquisto auto
+      9418  acquisto combinazione
+      8426  acquisto documenti
+     14092  acquisto fumogeni
+     10514  acquisto mappa
+      9551  acquisto personale
+      3447  baciamano
+      3886  opzione allIn=false
+     16114  opzione allIn=true
+     13951  opzione fixerElimina=false
+      6049  opzione fixerElimina=true
+     13993  opzione semi=false
+      6007  opzione semi=true
+      6853  ritiro al flop
+      5156  ritiro al turn
+      1446  ritiro dal Rilancio
