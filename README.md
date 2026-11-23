@@ -46,6 +46,19 @@ In Foundry: *Sistemi di gioco → Installa sistema* e incolla nel campo *URL del
 https://github.com/guido92/guardie-e-ladri-foundry/releases/latest/download/system.json
 ```
 
+### Requisiti
+
+- Foundry VTT 13 o 14 (basta la licenza del Croupier, che ospita la partita: Foundry desktop o un hosting come The Forge).
+- I giocatori entrano da browser, schermo di almeno 1366×768.
+- Il manuale, gratuito su [officinameningi.it](https://officinameningi.it/guardie-ladri-il-gdr/).
+
+### Provarlo
+
+1. *Mondi → Crea mondo*, sistema **Guardie & Ladri**, avvia il mondo ed entra come Gamemaster.
+2. In *Configura giocatori* crea un utente per ogni amico e condividi l'indirizzo del tuo Foundry (tasto *Invita*).
+3. Ogni giocatore crea il suo Ladro dal Tavolo; il Croupier spunta i Ladri e preme **Apri il tavolo**.
+4. Per una prova da soli: crea 2-4 Ladri senza giocatori, il Croupier li comanda tutti.
+
 In sviluppo: collega la cartella del repo in `Data/systems/guardie-e-ladri` (junction su Windows) e riavvia Foundry.
 
 ## Sviluppo
